@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import jsQR from 'jsqr'
+import css from './index.module.css'
 import showScanCode from './utils/show'
 
 export interface ScanFuncProps {
@@ -25,7 +26,6 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
   basicHeight = 0 // 高度
 
   qty = 0 // 计数 用以降低频率
-
 
   constructor(props: ScanFuncProps) {
     super(props);
@@ -116,8 +116,15 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
         video.src = window.URL && window.URL.createObjectURL(stream);
       }
     }
-    video.play();
-    window.requestAnimationFrame(this.drawVideo);
+    const playAudioPromise = video.play();
+    if (playAudioPromise) {
+      playAudioPromise.then(() => {
+        console.log('播放成功');
+      }).catch(error => {
+        alert('ios请点击进行扫描')
+      })
+      window.requestAnimationFrame(this.drawVideo);
+    }
   }
 
   // 播放video流到canvas
@@ -186,6 +193,20 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
     }
   }
 
+  handleIosPlay = () => {
+    if (!this.video) {
+      return;
+    }
+    const playAudioPromise = this.video.play()
+    if (playAudioPromise) {
+      playAudioPromise.then(() => {
+        console.log('播放成功');
+      }).catch(error => {
+        alert('ios请点击进行扫描')
+      })
+    }
+  }
+
   render() {
     const { visible, multiple } = this.props
     const { codes } = this.state
@@ -201,23 +222,23 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
         }}>
         <video
           src=""
-          style={{ visibility: 'hidden', marginTop: -100 }}
+          style={{ visibility: 'hidden', marginTop: -200 }}
           width="1px"
           height="1px"
           ref={this.handleRef}
         >
         </video>
-        <div className="capture-wrap">
+        <div className={css.captureWrap} onClick={this.handleIosPlay}>
           <canvas
             id="qr-canvas"
             width={this.basicWidth}
             height={this.basicHeight}
-            className="capture"
+            className={css.capture}
             ref={this.handleCanvas}
           >
           </canvas>
           <div
-            className="btns"
+            className={css.btns}
             style={{ width: this.basicWidth }}
           >
             <div
