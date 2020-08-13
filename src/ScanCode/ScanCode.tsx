@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import jsQR from 'jsqr'
-import css from './index.module.css'
 import showScanCode from './utils/show'
 
 export interface ScanFuncProps {
@@ -228,17 +227,17 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
           ref={this.handleRef}
         >
         </video>
-        <div className={css.captureWrap} onClick={this.handleIosPlay}>
+        <div className="capture-wrap" onClick={this.handleIosPlay}>
           <canvas
             id="qr-canvas"
             width={this.basicWidth}
             height={this.basicHeight}
-            className={css.capture}
+            className="capture"
             ref={this.handleCanvas}
           >
           </canvas>
           <div
-            className={css.btns}
+            className="btns"
             style={{ width: this.basicWidth }}
           >
             <div
