@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  <title>Scan</title>
+  <style type='text/css'>
+    html,
+    body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .open,
+    .close {
+      font-size: 18px;
+      color: #f5f5f5;
+      text-shadow: 0 1px 3px #565656;
+      background: #565656;
+      display: inline-block;
+      border-radius: 2px;
+      padding: 10px
+    }
+
+    .capture {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0px;
+      margin-left: auto;
+      margin-right: auto;
+      /* 要设定宽度 */
+    }
+  </style>
+  <script src="./src/jsQR.js"></script>
+</head>
+
+<body>
+  <video src="" style="visibility: hidden;" width="1" height="1"></video>
+  <div>
+    <div id="canvas-wrap">
+      <canvas id="qr-canvas" class="capture"></canvas>
+    </div>
+    <div class="control">
+      <p class="open">开启摄像头</p>
+      <p class="close">关闭摄像头</p>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <script type="text/javascript">
+    const { width } = window.screen
+    let buffer;
+    const codes = []
+    const oCapture = document.querySelector("video"),
+      open = document.querySelector(".open"),
+      close = document.querySelector(".close");
+    const control = document.querySelector(".control");
+    const canvas = document.getElementById('qr-canvas');
+    const canvasWrap = document.getElementById('canvas-wrap')
+    const list = document.getElementById('list')
+
+    const ctx = canvas.getContext('2d');
+    const pix = 0.6
+    const basicWidth = Math.floor(width * pix)
+    const basicHeight = Math.floor(basicWidth * 16 / 9)
+    canvas.setAttribute("width", basicWidth + 'px')
+    canvas.setAttribute("height", basicHeight + 'px')
+    canvasWrap.style.width = basicWidth + 'px'
+    canvasWrap.style.height = basicHeight + 'px'
+
+    window.navigator.getUserMedia = navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+    function invokingCarera() {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: { facingMode: { exact: "environment" } } //true//
+        })
+          .then(function (mediaStream) { getVideoStream(mediaStream) })
+          .catch(function (error) {
+            alert(error)
+          })
+      } else if (navigator.getUserMedia) {
+        navigator.getUserMedia({
+          'video': true,
+          'audio': true
+        }, getVideoStream, getFail)
+      } else {
+        alert('不支持摄像头调用！')
+      }
+    }
+    //调用成功
+    function getVideoStream(stream) {
+      buffer = stream;
+      if (oCapture.mozSrcObject !== undefined) {
+        oCapture.mozSrcObject = buffer;
+      } else {
+        try {
+          oCapture.srcObject = buffer;
+        } catch (error) {
+          oCapture.src = window.URL && window.URL.createObjectURL(buffer);
+        }
+      }
+      oCapture.play();
+      screenShot()
+    }
+    function getFail() {
+
+    }
+    control.addEventListener('click', function (e) {
+      e = e || window.event;
+      let className = e.target.className;
+      switch (className) {
+        case 'open':
+          invokingCarera();
+          break;
+        case 'close':
+          closeCamera();
+          break;
+          break;
+        default:
+          break;
+      }
+    })
+    function closeCamera() {
+      if (buffer) {
+        buffer.getTracks()[0].stop()
+        buffer.getTracks()[1].stop()
+      }
+    }
+    function screenShot() {
+      function drawVideo() {
+        ctx.drawImage(oCapture, 0, 0, basicWidth, basicHeight);
+        const code = jsQR(ctx.getImageData(0, 0, basicWidth, basicHeight).data, basicWidth, basicHeight);
+        if (code && !codes.includes(code.data)) {
+          codes.push(code.data)
+          const node = document.createElement('div');
+          node.innerText = code.data
+          list.appendChild(node)
+        }
+        requestAnimationFrame(drawVideo);
+      }
+      window.requestAnimationFrame(drawVideo);
+    }
+  </script>
+</body>
+
+</html>
