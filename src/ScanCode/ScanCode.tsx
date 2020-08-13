@@ -178,6 +178,8 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
       onCancel(() => {
         this.closeCamera()
       })
+    } else {
+      this.closeCamera()
     }
   }
 
@@ -189,6 +191,8 @@ class ScanCode extends PureComponent<ScanFuncProps, Readonly<IState>> {
       onOk(codes, () => {
         this.closeCamera()
       })
+    } else {
+      this.closeCamera()
     }
   }
 
