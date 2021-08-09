@@ -1,6 +1,9 @@
 # h5-scan
 移动端调用摄像头，扫描二维码（支持react和原生js）
-封装jsQR，调用摄像头扫描或许二维码
+封装jsQR，调用摄像头扫描获取二维码
+
+## Demo
+[Demo](https://zyzcss.github.io/scan/scan.html)
 
 ## 兼容性
 https://caniuse.com/#search=getUserMedia
