@@ -3,7 +3,7 @@
 封装jsQR，调用摄像头扫描获取二维码
 
 ## Demo
-[Demo](https://zyzcss.github.io/scan/scan.html)
+[Demo移动端打开](https://zyzcss.github.io/scan/scan.html)
 
 ## 兼容性
 https://caniuse.com/#search=getUserMedia
