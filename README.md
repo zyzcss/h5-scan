@@ -1,6 +1,7 @@
 # h5-scan
 移动端调用摄像头，扫描二维码（支持react和原生js）
 封装jsQR，调用摄像头扫描获取二维码
+(提升识别准确率/成功率可以尝试提高canvas的生成图片清晰度，例如引入hidpi-canvas，或者根据屏幕像素比修改canvas的宽高)
 
 ## Demo
 [Demo移动端打开](https://zyzcss.github.io/scan/scan.html)
