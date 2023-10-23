@@ -8,6 +8,7 @@
 
 ## 兼容性
 https://caniuse.com/#search=getUserMedia
+(需要有https环境)
 
 ## 使用说明
 1.  git clone https://github.com/zyzcss/h5-scan.git 
