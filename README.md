@@ -8,7 +8,6 @@
 
 ## 兼容性
 https://caniuse.com/#search=getUserMedia
-(需要有https环境)
 
 ## 使用说明
 1.  git clone https://github.com/zyzcss/h5-scan.git 
@@ -19,6 +18,8 @@ https://caniuse.com/#search=getUserMedia
   手机浏览器输入
     react环境：https://192.168.0.1:3000/
     原生js环境：https://192.168.0.1:3000/test.html
+
+注:需要有https环境
 
 ## React
 ### 使用方式
